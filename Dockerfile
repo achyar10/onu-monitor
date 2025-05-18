@@ -9,7 +9,9 @@ FROM node:23-alpine AS builder
 WORKDIR /app
 
 # Set environment variable for Next.js at build time
-ENV NEXT_PUBLIC_BASEURL=https://api-olt.abanetlink.id
+ARG NEXT_PUBLIC_BASEURL
+
+ENV NEXT_PUBLIC_BASEURL=$NEXT_PUBLIC_BASEURL
 
 COPY . .
 COPY --from=dependencies /app/node_modules ./node_modules

@@ -1,5 +1,10 @@
 services:
   app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_BASEURL: https://api-olt.abanetlink.id
     image: onu-monitor:latest
     container_name: onu-monitor
     environment:
