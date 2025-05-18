@@ -3,6 +3,6 @@ services:
     image: onu-monitor:latest
     container_name: onu-monitor
     environment:
-      - NEXT_PUBLIC_BASEURL=https://onu-monitoring.abanetlink.id
+      - NEXT_PUBLIC_BASEURL=https://api-olt.abanetlink.id
     ports:
       - "4099:3000"
