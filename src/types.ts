@@ -22,3 +22,11 @@ export interface OnuDetail extends OnuData {
     offline_reason: string;
     gpon_optical_distance: string;
 }
+
+export interface OnuDataRegister {
+    onu_id: number;
+    serial_number?: string;
+    status?: string;
+    region?: string;  // ⬅️ Tambahkan ini
+    code?: string;    // ⬅️ Tambahkan ini
+  }

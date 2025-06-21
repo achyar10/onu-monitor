@@ -1,11 +1,11 @@
-// app/OnuPage.tsx
 'use client';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { OnuData, OnuDetail } from '../types';
+import { OnuData, OnuDataRegister, OnuDetail } from '../types';
 import OnuFilterForm from '../components/onu/OnuFilterForm';
 import OnuTable from '../components/onu/OnuTable';
 import OnuDetailModal from '../components/onu/OnuDetailModal';
+import OnuRegisterModal from '@/components/onu/OnuRegisterModal';
 
 export default function OnuPage() {
   const [data, setData] = useState<OnuData[]>([]);
@@ -15,6 +15,7 @@ export default function OnuPage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [detail, setDetail] = useState<OnuDetail | null>(null);
+  const [registerData, setRegisterData] = useState<OnuDataRegister | null>(null);
 
   const fetchData = async (selectedBoard: number, selectedPon: number) => {
     setLoading(true);
@@ -42,12 +43,29 @@ export default function OnuPage() {
     }
   };
 
+  const handleRegister = (onu: OnuDataRegister) => {
+    setRegisterData(onu);
+  };
+
+  const handleRefresh = () => {
+    fetchData(board, pon);
+  };
+
   return (
     <div className="p-6 bg-gray-100 min-h-screen font-sans">
       <div className="max-w-7xl mx-auto bg-white rounded-md shadow-md p-6">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-          <span>📡</span> Monitoring Status ONU - Board {board} / PON {pon}
-        </h1>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
+            <span>📡</span> Monitoring Status ONU - Board {board} / PON {pon}
+          </h1>
+          <button
+            onClick={handleRefresh}
+            className="bg-red-600 text-white text-sm px-4 py-2 rounded-md hover:bg-red-700 transition"
+            style={{ cursor: loading ? 'not-allowed' : 'pointer' }}
+          >
+            Refresh
+          </button>
+        </div>
 
         <OnuFilterForm
           board={board}
@@ -63,11 +81,20 @@ export default function OnuPage() {
         {loading ? (
           <div className="text-center py-10 text-gray-500 text-sm">Memuat data...</div>
         ) : (
-          <OnuTable data={data} search={search} statusFilter={statusFilter} onDetail={handleDetail} />
+          <OnuTable data={data} search={search} statusFilter={statusFilter} onDetail={handleDetail} onRegister={handleRegister} />
         )}
       </div>
 
       {detail && <OnuDetailModal detail={detail} onClose={() => setDetail(null)} />}
+      {registerData && (
+        <OnuRegisterModal
+          board={board}
+          pon={pon}
+          data={registerData}
+          onClose={() => setRegisterData(null)}
+          onSuccess={() => fetchData(board, pon)}
+        />
+      )}
     </div>
   );
 }

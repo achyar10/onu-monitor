@@ -1,6 +1,6 @@
 // components/onu/OnuTable.tsx
 import React from 'react';
-import { OnuData } from '../../types';
+import { OnuData, OnuDataRegister } from '../../types';
 import { statusStyles, getRxPowerColor } from './OnuStatusBadge';
 
 interface Props {
@@ -8,9 +8,10 @@ interface Props {
     search: string;
     statusFilter: string;
     onDetail: (onu_id: number) => void;
+    onRegister: (onu: OnuDataRegister) => void; // Uncomment if needed
 }
 
-export default function OnuTable({ data, search, statusFilter, onDetail }: Props) {
+export default function OnuTable({ data, search, statusFilter, onDetail, onRegister }: Props) {
     const matchSearch = (f?: string) => f?.toLowerCase().includes(search.toLowerCase()) ?? false;
 
     return (
@@ -63,7 +64,14 @@ export default function OnuTable({ data, search, statusFilter, onDetail }: Props
                                     <td className="px-4 py-2 text-center">
                                         <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 text-gray-600">Empty</span>
                                     </td>
-                                    <td className="px-4 py-2 text-center text-gray-400 italic">-</td>
+                                    <td className="px-4 py-2 text-center">
+                                        <button
+                                            onClick={() => onRegister({ onu_id })}
+                                            className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-xs transition"
+                                        >
+                                            Register
+                                        </button>
+                                    </td>
                                 </tr>
                             );
                         }
