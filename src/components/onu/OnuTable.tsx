@@ -67,7 +67,7 @@ export default function OnuTable({ data, search, statusFilter, onDetail, onRegis
                                     <td className="px-4 py-2 text-center">
                                         <button
                                             onClick={() => onRegister({ onu_id })}
-                                            className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-xs transition"
+                                            className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-xs transition cursor-pointer"
                                         >
                                             Register
                                         </button>

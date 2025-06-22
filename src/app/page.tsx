@@ -6,6 +6,7 @@ import OnuFilterForm from '../components/onu/OnuFilterForm';
 import OnuTable from '../components/onu/OnuTable';
 import OnuDetailModal from '../components/onu/OnuDetailModal';
 import OnuRegisterModal from '@/components/onu/OnuRegisterModal';
+import { useRouter } from 'next/navigation';
 
 export default function OnuPage() {
   const [data, setData] = useState<OnuData[]>([]);
@@ -16,6 +17,8 @@ export default function OnuPage() {
   const [statusFilter, setStatusFilter] = useState('All');
   const [detail, setDetail] = useState<OnuDetail | null>(null);
   const [registerData, setRegisterData] = useState<OnuDataRegister | null>(null);
+
+  const router = useRouter();
 
   const fetchData = async (selectedBoard: number, selectedPon: number) => {
     setLoading(true);
@@ -31,8 +34,12 @@ export default function OnuPage() {
   };
 
   useEffect(() => {
+    const isLoggedIn = sessionStorage.getItem('loggedIn');
+    if (isLoggedIn !== 'true') {
+      router.push('/login');
+    }
     fetchData(board, pon);
-  }, [board, pon]);
+  }, [board, pon, router]);
 
   const handleDetail = async (onu_id: number) => {
     try {
@@ -54,17 +61,30 @@ export default function OnuPage() {
   return (
     <div className="p-6 bg-gray-100 min-h-screen font-sans">
       <div className="max-w-7xl mx-auto bg-white rounded-md shadow-md p-6">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
           <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
             <span>📡</span> Monitoring Status ONU - Board {board} / PON {pon}
           </h1>
-          <button
-            onClick={handleRefresh}
-            className="bg-red-600 text-white text-sm px-4 py-2 rounded-md hover:bg-red-700 transition"
-            style={{ cursor: loading ? 'not-allowed' : 'pointer' }}
-          >
-            Refresh
-          </button>
+
+          <div className="flex gap-2">
+            <button
+              onClick={handleRefresh}
+              className="bg-green-600 text-white text-sm cursor-pointer px-4 py-2 rounded-md hover:bg-green-700 transition disabled:opacity-60"
+              disabled={loading}
+            >
+              {loading ? 'Memuat...' : 'Refresh'}
+            </button>
+
+            <button
+              onClick={() => {
+                sessionStorage.removeItem('loggedIn');
+                router.push('/login');
+              }}
+              className="text-sm bg-red-600 text-white cursor-pointer px-4 py-2 rounded-md hover:bg-red-700 transition"
+            >
+            Logout
+            </button>
+          </div>
         </div>
 
         <OnuFilterForm
