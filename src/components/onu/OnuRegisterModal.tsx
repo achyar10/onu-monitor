@@ -27,7 +27,7 @@ export default function OnuRegisterModal({ board, pon, data, onClose, onSuccess 
             region: region,
             code: code,
             onu: data.onu_id,
-            vlan_id: vlanId,
+            vlan_id: Number(vlanId),
         };
 
         try {
