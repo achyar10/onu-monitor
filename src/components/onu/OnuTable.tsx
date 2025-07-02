@@ -1,4 +1,3 @@
-// components/onu/OnuTable.tsx
 import React from 'react';
 import { OnuData, OnuDataRegister } from '../../types';
 import { statusStyles, getRxPowerColor } from './OnuStatusBadge';
@@ -8,10 +7,11 @@ interface Props {
     search: string;
     statusFilter: string;
     onDetail: (onu_id: number) => void;
-    onRegister: (onu: OnuDataRegister) => void; // Uncomment if needed
+    onRegister: (onu: OnuDataRegister) => void;
+    onReboot: (onu_id: number) => void;
 }
 
-export default function OnuTable({ data, search, statusFilter, onDetail, onRegister }: Props) {
+export default function OnuTable({ data, search, statusFilter, onDetail, onRegister, onReboot }: Props) {
     const matchSearch = (f?: string) => f?.toLowerCase().includes(search.toLowerCase()) ?? false;
 
     return (
@@ -32,6 +32,7 @@ export default function OnuTable({ data, search, statusFilter, onDetail, onRegis
                     {Array.from({ length: 128 }, (_, i) => {
                         const onu_id = i + 1;
                         const onu = data.find((d) => d.onu_id === onu_id);
+
                         if (onu && (matchSearch(onu.name) || matchSearch(onu.serial_number) || !search)) {
                             if (statusFilter === 'All' || onu.status === statusFilter) {
                                 const style = statusStyles[onu.status] || statusStyles['Unknown'];
@@ -45,9 +46,18 @@ export default function OnuTable({ data, search, statusFilter, onDetail, onRegis
                                         <td className="px-4 py-2 text-center">
                                             <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${style.badgeClass}`}>{onu.status}</span>
                                         </td>
-                                        <td className="px-4 py-2 text-center">
-                                            <button onClick={() => onDetail(onu.onu_id)} className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-xs cursor-pointer transition">
+                                        <td className="px-4 py-2 text-center space-x-1">
+                                            <button
+                                                onClick={() => onDetail(onu.onu_id)}
+                                                className="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-xs transition"
+                                            >
                                                 Detail
+                                            </button>
+                                            <button
+                                                onClick={() => onReboot(onu.onu_id)}
+                                                className="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-xs transition"
+                                            >
+                                                Reboot
                                             </button>
                                         </td>
                                     </tr>

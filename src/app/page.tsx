@@ -17,6 +17,7 @@ export default function OnuPage() {
   const [statusFilter, setStatusFilter] = useState('All');
   const [detail, setDetail] = useState<OnuDetail | null>(null);
   const [registerData, setRegisterData] = useState<OnuDataRegister | null>(null);
+  const [isRebooting, setIsRebooting] = useState(false);
 
   const router = useRouter();
 
@@ -57,6 +58,38 @@ export default function OnuPage() {
   const handleRefresh = () => {
     fetchData(board, pon);
   };
+
+  const handleReboot = (onu_id: number) => {
+    if (isRebooting) return; // mencegah double click
+    if (!window.confirm(`Yakin reboot ONU ID ${onu_id}?`)) return;
+
+    setIsRebooting(true);
+
+    fetch(`${process.env.NEXT_PUBLIC_BASEURL}/api/v1/onu/reboot`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        olt_index: `gpon-olt_1/${board}/${pon}`,
+        onu: onu_id,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.code === 200) {
+          alert('✅ Reboot berhasil');
+        } else {
+          alert(`⚠️ Gagal reboot: ${data.status}`);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        alert('❌ Terjadi kesalahan saat reboot.');
+      })
+      .finally(() => {
+        setIsRebooting(false);
+      });
+  };
+
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen font-sans">
@@ -101,7 +134,7 @@ export default function OnuPage() {
         {loading ? (
           <div className="text-center py-10 text-gray-500 text-sm">Memuat data...</div>
         ) : (
-          <OnuTable data={data} search={search} statusFilter={statusFilter} onDetail={handleDetail} onRegister={handleRegister} />
+            <OnuTable data={data} search={search} statusFilter={statusFilter} onDetail={handleDetail} onRegister={handleRegister} onReboot={handleReboot} />
         )}
       </div>
 

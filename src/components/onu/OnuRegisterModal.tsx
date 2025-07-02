@@ -22,7 +22,7 @@ export default function OnuRegisterModal({ board, pon, data, onClose, onSuccess 
         setIsSubmitting(true); // ✅ Disable tombol
 
         const payload = {
-            olt_index: `gpon-olt_${board}/1/${pon}`,
+            olt_index: `gpon-olt_1/${board}/${pon}`,
             serial_number: serialNumber,
             region: region,
             code: code,
