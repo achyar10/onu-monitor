@@ -29,4 +29,5 @@ export interface OnuDataRegister {
     status?: string;
     region?: string;  // ⬅️ Tambahkan ini
     code?: string;    // ⬅️ Tambahkan ini
+    vlan_id?: number;
   }

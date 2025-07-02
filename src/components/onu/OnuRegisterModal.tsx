@@ -14,6 +14,7 @@ export default function OnuRegisterModal({ board, pon, data, onClose, onSuccess 
     const [serialNumber, setSerialNumber] = useState(data.serial_number || '');
     const [region, setRegion] = useState(data.region || '');
     const [code, setCode] = useState(data.code || '');
+    const [vlanId, setVlanId] = useState(data.vlan_id || '');
     const [isSubmitting, setIsSubmitting] = useState(false); // ✅ New state
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -26,6 +27,7 @@ export default function OnuRegisterModal({ board, pon, data, onClose, onSuccess 
             region: region,
             code: code,
             onu: data.onu_id,
+            vlan_id: vlanId,
         };
 
         try {
@@ -53,6 +55,17 @@ export default function OnuRegisterModal({ board, pon, data, onClose, onSuccess 
                             value={`gpon-olt_${board}/1/${pon}`}
                             readOnly
                             className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100 text-gray-600"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-black mb-1">Vlan ID</label>
+                        <input
+                            type="number"
+                            value={vlanId}
+                            onChange={(e) => setVlanId(e.target.value)}
+                            className="w-full border border-gray-300 text-black rounded px-3 py-2"
+                            required
                         />
                     </div>
 
