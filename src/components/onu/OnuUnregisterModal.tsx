@@ -38,10 +38,10 @@ const OnuUnregisterModal: React.FC<Props> = ({ onClose }) => {
 
     return (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
-            <div className="bg-white rounded-xl shadow-xl p-6 max-w-3xl w-full relative">
+            <div className="bg-white text-black rounded-xl shadow-xl p-6 max-w-3xl w-full relative">
                 <h2 className="text-xl font-bold mb-4">Daftar ONU Belum Terdaftar</h2>
 
-                {loading && <p className="text-gray-500 text-sm">Memuat data...</p>}
+                {loading && <p className="text-gray-700 text-sm">Memuat data...</p>}
 
                 {error && (
                     <div className="text-red-600 text-sm mb-4">
@@ -50,18 +50,18 @@ const OnuUnregisterModal: React.FC<Props> = ({ onClose }) => {
                 )}
 
                 {!loading && !error && data.length === 0 && (
-                    <p className="text-gray-600 text-sm">Tidak ada ONU yang belum terdaftar.</p>
+                    <p className="text-gray-700 text-sm">Tidak ada ONU yang belum terdaftar.</p>
                 )}
 
                 {!loading && !error && data.length > 0 && (
-                    <table className="w-full table-auto border border-gray-300 text-sm">
+                    <table className="w-full table-auto border border-gray-300 text-sm text-black">
                         <thead>
-                            <tr className="bg-gray-100 text-left">
-                                <th className="border px-3 py-2">No</th>
-                                <th className="border px-3 py-2">OLT Index</th>
-                                <th className="border px-3 py-2">Model</th>
-                                <th className="border px-3 py-2">Serial Number</th>
-                                <th className="border px-3 py-2">Status</th>
+                            <tr className="bg-gray-100">
+                                <th className="border px-3 py-2 text-left">No</th>
+                                <th className="border px-3 py-2 text-left">OLT Index</th>
+                                <th className="border px-3 py-2 text-left">Model</th>
+                                <th className="border px-3 py-2 text-left">Serial Number</th>
+                                <th className="border px-3 py-2 text-left">Status</th>
                             </tr>
                         </thead>
                         <tbody>
