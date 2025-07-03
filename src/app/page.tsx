@@ -7,6 +7,7 @@ import OnuTable from '../components/onu/OnuTable';
 import OnuDetailModal from '../components/onu/OnuDetailModal';
 import OnuRegisterModal from '@/components/onu/OnuRegisterModal';
 import { useRouter } from 'next/navigation';
+import OnuUnregisterModal from '@/components/onu/OnuUnregisterModal';
 
 export default function OnuPage() {
   const [data, setData] = useState<OnuData[]>([]);
@@ -18,6 +19,7 @@ export default function OnuPage() {
   const [detail, setDetail] = useState<OnuDetail | null>(null);
   const [registerData, setRegisterData] = useState<OnuDataRegister | null>(null);
   const [isRebooting, setIsRebooting] = useState(false);
+  const [showUnregisterModal, setShowUnregisterModal] = useState(false);
 
   const router = useRouter();
 
@@ -109,13 +111,20 @@ export default function OnuPage() {
             </button>
 
             <button
+              onClick={() => setShowUnregisterModal(true)}
+              className="bg-yellow-500 text-white text-sm cursor-pointer px-4 py-2 rounded-md hover:bg-yellow-600 transition"
+            >
+              Cek Unregister
+            </button>
+
+            <button
               onClick={() => {
                 sessionStorage.removeItem('loggedIn');
                 router.push('/login');
               }}
               className="text-sm bg-red-600 text-white cursor-pointer px-4 py-2 rounded-md hover:bg-red-700 transition"
             >
-            Logout
+              Logout
             </button>
           </div>
         </div>
@@ -148,6 +157,11 @@ export default function OnuPage() {
           onSuccess={() => fetchData(board, pon)}
         />
       )}
+
+      {showUnregisterModal && (
+        <OnuUnregisterModal onClose={() => setShowUnregisterModal(false)} />
+      )}
+
     </div>
   );
 }

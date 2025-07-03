@@ -15,6 +15,6 @@ export const getRxPowerColor = (value: string) => {
     const num = parseFloat(value);
     if (isNaN(num) || num > 0 || num === 101.07) return 'text-gray-400';
     if (num <= -26) return 'text-red-600';
-    if (num <= -20) return 'text-green-600';
-    return 'text-yellow-500';
+    if (num <= -20) return 'text-yellow-600';
+    return 'text-green-600';
 };
