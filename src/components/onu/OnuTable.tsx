@@ -9,9 +9,10 @@ interface Props {
     onDetail: (onu_id: number) => void;
     onRegister: (onu: OnuDataRegister) => void;
     onReboot: (onu_id: number) => void;
+    onRemove: (onu_id: number) => void;
 }
 
-export default function OnuTable({ data, search, statusFilter, onDetail, onRegister, onReboot }: Props) {
+export default function OnuTable({ data, search, statusFilter, onDetail, onRegister, onReboot, onRemove }: Props) {
     const matchSearch = (f?: string) => f?.toLowerCase().includes(search.toLowerCase()) ?? false;
 
     return (
@@ -49,15 +50,21 @@ export default function OnuTable({ data, search, statusFilter, onDetail, onRegis
                                         <td className="px-4 py-2 text-center space-x-1">
                                             <button
                                                 onClick={() => onDetail(onu.onu_id)}
-                                                className="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-xs transition"
+                                                className="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-xs transition cursor-pointer"
                                             >
                                                 Detail
                                             </button>
                                             <button
                                                 onClick={() => onReboot(onu.onu_id)}
-                                                className="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-xs transition"
+                                                className="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-700 text-xs transition cursor-pointer"
                                             >
                                                 Reboot
+                                            </button>
+                                            <button
+                                                onClick={() => onRemove(onu.onu_id)}
+                                                className="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-xs transition cursor-pointer"
+                                            >
+                                                Remove
                                             </button>
                                         </td>
                                     </tr>
