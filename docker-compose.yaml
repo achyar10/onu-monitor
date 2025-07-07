@@ -7,6 +7,7 @@ services:
         NEXT_PUBLIC_BASEURL: https://api-olt.abanetlink.id
     image: onu-monitor:latest
     container_name: onu-monitor
+    restart: always
     environment:
       - NEXT_PUBLIC_BASEURL=https://api-olt.abanetlink.id
     ports:
