@@ -8,6 +8,7 @@ import OnuDetailModal from '../components/onu/OnuDetailModal';
 import OnuRegisterModal from '@/components/onu/OnuRegisterModal';
 import { useRouter } from 'next/navigation';
 import OnuUnregisterModal from '@/components/onu/OnuUnregisterModal';
+import BaseUrlModal from '@/components/BaseUrlModal';
 
 export default function OnuPage() {
   const [data, setData] = useState<OnuData[]>([]);
@@ -21,13 +22,15 @@ export default function OnuPage() {
   const [isRebooting, setIsRebooting] = useState(false);
   const [isRemoving, setIsRemoving] = useState(false);
   const [showUnregisterModal, setShowUnregisterModal] = useState(false);
+  const [showBaseUrlModal, setShowBaseUrlModal] = useState(false);
 
   const router = useRouter();
+  const baseURL = localStorage.getItem('baseURL') || 'http://default.local/api';
 
   const fetchData = async (selectedBoard: number, selectedPon: number) => {
     setLoading(true);
     try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_BASEURL}/api/v1/board/${selectedBoard}/pon/${selectedPon}`);
+      const res = await axios.get(`${baseURL}/api/v1/board/${selectedBoard}/pon/${selectedPon}`);
       setData(res.data.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -47,7 +50,7 @@ export default function OnuPage() {
 
   const handleDetail = async (onu_id: number) => {
     try {
-      const res = await axios.get(`${process.env.NEXT_PUBLIC_BASEURL}/api/v1/board/${board}/pon/${pon}/onu/${onu_id}`);
+      const res = await axios.get(`${baseURL}/api/v1/board/${board}/pon/${pon}/onu/${onu_id}`);
       setDetail(res.data.data);
     } catch (error) {
       console.error('Gagal mengambil detail ONU:', error);
@@ -68,7 +71,7 @@ export default function OnuPage() {
 
     setIsRebooting(true);
 
-    fetch(`${process.env.NEXT_PUBLIC_BASEURL}/api/v1/onu/reboot`, {
+    fetch(`${baseURL}/api/v1/onu/reboot`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -99,7 +102,7 @@ export default function OnuPage() {
 
     setIsRemoving(true);
 
-    fetch(`${process.env.NEXT_PUBLIC_BASEURL}/api/v1/onu/remove`, {
+    fetch(`${baseURL}/api/v1/onu/remove`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -131,7 +134,7 @@ export default function OnuPage() {
         <div className="flex flex-wrap justify-between items-center mb-6 gap-4">
           <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
             <span>📡</span> Monitoring Status ONU - Board {board} / PON {pon}
-          </h1>
+          </h1> 
 
           <div className="flex gap-2">
             <button
@@ -147,6 +150,13 @@ export default function OnuPage() {
               className="bg-yellow-500 text-white text-sm cursor-pointer px-4 py-2 rounded-md hover:bg-yellow-600 transition"
             >
               Cek Unregister
+            </button>
+
+            <button
+              onClick={() => setShowBaseUrlModal(true)}
+              className="bg-blue-600 text-white text-sm cursor-pointer px-4 py-2 rounded-md hover:bg-blue-700 transition"
+            >
+              Setting
             </button>
 
             <button
@@ -192,6 +202,10 @@ export default function OnuPage() {
 
       {showUnregisterModal && (
         <OnuUnregisterModal onClose={() => setShowUnregisterModal(false)} />
+      )}
+
+      {showBaseUrlModal && (
+        <BaseUrlModal onClose={() => setShowBaseUrlModal(false)} onSave={() => fetchData(board, pon)} />
       )}
 
     </div>

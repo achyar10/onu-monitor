@@ -18,11 +18,13 @@ const OnuUnregisterModal: React.FC<Props> = ({ onClose }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    const baseURL = localStorage.getItem('baseURL') || 'http://default.local/api';
+
     useEffect(() => {
         const fetchUnactivatedOnu = async () => {
             try {
                 setLoading(true);
-                const res = await axios.get(`${process.env.NEXT_PUBLIC_BASEURL}/api/v1/onu/unactivated`);
+                const res = await axios.get(`${baseURL}/api/v1/onu/unactivated`);
                 setData(res.data.data.detected_onu);
                 setError(null);
             } catch (err: any) {

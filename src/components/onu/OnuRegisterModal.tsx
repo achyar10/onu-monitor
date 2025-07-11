@@ -17,6 +17,8 @@ export default function OnuRegisterModal({ board, pon, data, onClose, onSuccess 
     const [vlanId, setVlanId] = useState(data.vlan_id || '');
     const [isSubmitting, setIsSubmitting] = useState(false); // ✅ New state
 
+    const baseURL = localStorage.getItem('baseURL') || 'http://default.local/api';
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true); // ✅ Disable tombol
@@ -31,7 +33,7 @@ export default function OnuRegisterModal({ board, pon, data, onClose, onSuccess 
         };
 
         try {
-            await axios.post(`${process.env.NEXT_PUBLIC_BASEURL}/api/v1/onu/register`, payload);
+            await axios.post(`${baseURL}/api/v1/onu/register`, payload);
             alert('Registrasi berhasil!');
             onClose();
             onSuccess?.();
