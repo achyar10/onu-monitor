@@ -23,7 +23,7 @@ export default function OnuPage() {
   const [isRemoving, setIsRemoving] = useState(false);
   const [showUnregisterModal, setShowUnregisterModal] = useState(false);
   const [showBaseUrlModal, setShowBaseUrlModal] = useState(false);
-  const [baseURL, setBaseURL] = useState('http://default.local/api');
+  const [baseURL, setBaseURL] = useState('http://10.10.200.21:8081');
 
   const router = useRouter();
 
@@ -46,7 +46,7 @@ export default function OnuPage() {
       router.push('/login');
     }
     if (typeof window !== 'undefined') {
-      const savedUrl = localStorage.getItem('baseURL') || 'http://default.local/api';
+      const savedUrl = localStorage.getItem('baseURL') || 'http://10.10.200.21:8081';
       setBaseURL(savedUrl);
     }
     fetchData(board, pon);
