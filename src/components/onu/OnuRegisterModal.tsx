@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { OnuDataRegister } from '../../types';
 
@@ -16,8 +16,14 @@ export default function OnuRegisterModal({ board, pon, data, onClose, onSuccess 
     const [code, setCode] = useState(data.code || '');
     const [vlanId, setVlanId] = useState(data.vlan_id || '');
     const [isSubmitting, setIsSubmitting] = useState(false); // ✅ New state
+    const [baseURL, setBaseURL] = useState('http://default.local/api');
 
-    const baseURL = localStorage.getItem('baseURL') || 'http://default.local/api';
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const savedURL = localStorage.getItem('baseURL') || 'http://default.local/api';
+            setBaseURL(savedURL);
+        }
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

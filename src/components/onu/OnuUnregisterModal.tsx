@@ -17,8 +17,7 @@ const OnuUnregisterModal: React.FC<Props> = ({ onClose }) => {
     const [data, setData] = useState<OnuUnactivated[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
-    const baseURL = localStorage.getItem('baseURL') || 'http://default.local/api';
+    const [baseURL, setBaseURL] = useState('http://default.local/api');
 
     useEffect(() => {
         const fetchUnactivatedOnu = async () => {
@@ -34,6 +33,10 @@ const OnuUnregisterModal: React.FC<Props> = ({ onClose }) => {
                 setLoading(false);
             }
         };
+        if (typeof window !== 'undefined') {
+            const savedURL = localStorage.getItem('baseURL') || 'http://default.local/api';
+            setBaseURL(savedURL);
+        }
 
         fetchUnactivatedOnu();
     }, []);

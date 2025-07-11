@@ -23,9 +23,9 @@ export default function OnuPage() {
   const [isRemoving, setIsRemoving] = useState(false);
   const [showUnregisterModal, setShowUnregisterModal] = useState(false);
   const [showBaseUrlModal, setShowBaseUrlModal] = useState(false);
+  const [baseURL, setBaseURL] = useState('http://default.local/api');
 
   const router = useRouter();
-  const baseURL = localStorage.getItem('baseURL') || 'http://default.local/api';
 
   const fetchData = async (selectedBoard: number, selectedPon: number) => {
     setLoading(true);
@@ -44,6 +44,10 @@ export default function OnuPage() {
     const isLoggedIn = sessionStorage.getItem('loggedIn');
     if (isLoggedIn !== 'true') {
       router.push('/login');
+    }
+    if (typeof window !== 'undefined') {
+      const savedUrl = localStorage.getItem('baseURL') || 'http://default.local/api';
+      setBaseURL(savedUrl);
     }
     fetchData(board, pon);
   }, [board, pon, router]);
