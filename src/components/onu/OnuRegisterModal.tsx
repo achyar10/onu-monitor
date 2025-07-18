@@ -16,11 +16,11 @@ export default function OnuRegisterModal({ board, pon, data, onClose, onSuccess 
     const [code, setCode] = useState(data.code || '');
     const [vlanId, setVlanId] = useState(data.vlan_id || '');
     const [isSubmitting, setIsSubmitting] = useState(false); // ✅ New state
-    const [baseURL, setBaseURL] = useState('http://10.10.200.21:8081');
+    const [baseURL, setBaseURL] = useState('https://api-olt.abanetlink.id');
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const savedURL = localStorage.getItem('baseURL') || 'http://10.10.200.21:8081';
+            const savedURL = localStorage.getItem('baseURL') || 'https://api-olt.abanetlink.id';
             setBaseURL(savedURL);
         }
     }, []);

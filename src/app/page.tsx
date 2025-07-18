@@ -23,7 +23,7 @@ export default function OnuPage() {
   const [isRemoving, setIsRemoving] = useState(false);
   const [showUnregisterModal, setShowUnregisterModal] = useState(false);
   const [showBaseUrlModal, setShowBaseUrlModal] = useState(false);
-  const [baseURL, setBaseURL] = useState('http://10.10.200.21:8081');
+  const [baseURL, setBaseURL] = useState('https://api-olt.abanetlink.id');
 
   const router = useRouter();
 
@@ -46,7 +46,7 @@ export default function OnuPage() {
       router.push('/login');
     }
     if (typeof window !== 'undefined') {
-      const savedUrl = localStorage.getItem('baseURL') || 'http://10.10.200.21:8081';
+      const savedUrl = localStorage.getItem('baseURL') || 'https://api-olt.abanetlink.id';
       setBaseURL(savedUrl);
     }
     fetchData(board, pon);
